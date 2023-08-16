@@ -43,14 +43,14 @@ python train.py --model [x,r,l,lm]
 **Serving:**
 ```bash 
 # Run:
-python app.py
+streamlit run app.py
 #From the open localhost, upload the csv files, the press Predict button
 ```
 ## TO DO:
 - [ ] Explore in deep the data and do feature engineering
 - [ ] Increase the embedding tokenizer_max_length
 - [ ] Test more LLM approaches
-- [ ] Live deployment on Heroku, AWS, or Azure instead of local etc.
+- [ ] Live deployment on Heroku, Render or Azure instead of local.
 
 ## Reporting Issues and Feedbacks
 

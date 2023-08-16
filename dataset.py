@@ -16,7 +16,6 @@ from sklearn.model_selection import train_test_split, StratifiedShuffleSplit
 from collections import Counter
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
-from torch.utils.data import DataLoader, TensorDataset
 from arize.pandas.logger import Client
 from arize.utils.types import Environments, ModelTypes, EmbeddingColumnNames, Schema
 from arize.pandas.embeddings.tabular_generators import EmbeddingGeneratorForTabularFeatures
@@ -31,7 +30,6 @@ class AzurePMDataset(object):
         self.test_ratio = test_ratio
         self.time_split = False
         self.balancing = True
-        self.arize_client = Client(space_key='30cf57a', api_key='a82aea43494475bba4a')
         self.generator = EmbeddingGeneratorForTabularFeatures(
             model_name="distilbert-base-uncased",
             tokenizer_max_length=16
@@ -66,7 +64,7 @@ class AzurePMDataset(object):
         return X, y, scaler
 
     def preprocess_for_models(self, filenames, training=False, lstm_data=False, llm_embedding=False):
-        assert len(filenames)!=0, "Cannot find input data!"
+        # assert len(filenames)!=0, "Cannot find input data!"
         ## Reading input data
         if self.datatype=="csv":
             for i, file_data in enumerate(filenames):
@@ -138,7 +136,7 @@ class AzurePMDataset(object):
                 if "_machines" in file_data:
                     machine_df = pd.read_csv(file_data)
                     machine_df=machine_df.drop(columns=['model'])                    
-            assert len(filenames)==5, "Not enough input file, please check it!"
+            # assert len(filenames)==5, "Not enough input file, please check it!"
             data1 = pd.merge(telemetry_df, error_df, on=['datetime','machineID'], how='left').fillna(0)
             data2 = pd.merge(data1, failure_df, on=['datetime','machineID'], how='left').fillna(0)
             data3 = pd.merge(data2, maint_df, on=['datetime','machineID'], how='left').fillna(0)
